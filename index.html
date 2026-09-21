@@ -198,7 +198,7 @@ select:focus-visible, button:focus-visible, .tab:focus-visible { outline: 2px so
   font-size: 12.5px; color: var(--text-muted); margin-bottom: 8px;
 }
 svg.chart { display: block; width: 100%; height: auto; overflow: visible; }
-.badge svg, .ev-tag svg { display: inline-block; }
+.ev-tag svg { display: inline-block; }
 .tract { stroke: var(--surface-1); stroke-width: 0.5; cursor: pointer; }
 .tract.hi { stroke: var(--text-primary); stroke-width: 1.6; }
 .hood { fill: none; stroke: var(--text-primary); stroke-width: 1.1; opacity: 0.55; pointer-events: none; }
@@ -254,27 +254,6 @@ svg.chart { display: block; width: 100%; height: auto; overflow: visible; }
 .tip .t-val { font-weight: 600; font-variant-numeric: tabular-nums; }
 .tip .t-foot { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--grid); color: var(--text-muted); font-size: 11px; }
 
-/* ------------------------------------------------------------ inventory */
-.inv-row {
-  display: grid; grid-template-columns: 232px 1fr 60px 132px;
-  gap: 14px; align-items: center; padding: 5px 0;
-}
-.inv-label { font-size: 13px; color: var(--text-primary); }
-.inv-track { background: var(--grid); height: 12px; border-radius: 2px; position: relative; }
-.inv-bar { height: 12px; border-radius: 0 4px 4px 0; background: var(--accent); }
-.inv-bar.off { background: var(--axis); }
-.inv-val { font-size: 12.5px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
-.badge {
-  display: inline-flex; align-items: center; gap: 5px; font-size: 11px;
-  color: var(--text-secondary); white-space: nowrap;
-}
-.badge svg { flex: none; }
-.inv-head {
-  display: grid; grid-template-columns: 232px 1fr 60px 132px; gap: 14px;
-  font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
-  color: var(--text-muted); padding-bottom: 8px; border-bottom: 1px solid var(--grid); margin-bottom: 8px;
-}
-
 /* ----------------------------------------------------------------- tabs */
 .tabs { display: flex; gap: 4px; margin-bottom: 14px; }
 .tab {
@@ -295,10 +274,26 @@ td { font-variant-numeric: tabular-nums; }
 td:first-child { font-variant-numeric: normal; }
 tbody tr:hover { background: var(--plane); }
 .scroll { overflow-x: auto; }
-.ac1-cell { display: flex; align-items: center; gap: 7px; justify-content: flex-end; }
-.ac1-track { width: 86px; height: 10px; position: relative; flex: none; }
-.ac1-zero { position: absolute; left: 50%; top: -1px; bottom: -1px; width: 1px; background: var(--axis); }
-.ac1-bar { position: absolute; top: 1px; height: 8px; }
+
+/* ------------------------------------------------------------ panoramas */
+.pano-grid { display: grid; gap: 16px; }
+.pano { margin: 0; padding: 0; overflow: hidden; }
+.pano img { display: block; width: 100%; height: auto; }
+.pano-head {
+  display: flex; align-items: center; gap: 8px; padding: 14px 16px 11px;
+  font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-secondary);
+}
+.pano-head i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.pano-cap {
+  padding: 11px 16px 14px; font-family: var(--font-text); font-style: italic;
+  font-size: 12.5px; color: var(--text-muted);
+}
+.pano-cap a { color: var(--text-secondary); }
+.pano-note {
+  margin-top: 12px; max-width: 76ch; font-family: var(--font-text);
+  font-size: 12.5px; color: var(--text-muted); line-height: 1.6;
+}
 
 /* ------------------------------------------------------------- evidence */
 .ev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px; }
@@ -352,8 +347,6 @@ footer {
   .kpi, .maps, .scatter-grid { grid-template-columns: 1fr; }
   .tiles { grid-template-columns: repeat(2, 1fr); }
   .readout { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 16px; }
-  .inv-row, .inv-head { grid-template-columns: 150px 1fr 52px; }
-  .inv-row .badge, .inv-head span:last-child { display: none; }
 }
 @media print {
   body { background: #fff; }

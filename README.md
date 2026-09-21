@@ -20,9 +20,33 @@ beside the resident and stakeholder quotations published in the paper.
 |---|---|
 | **Where the gaps are** | Two linked tract choropleths — any feature against any tract characteristic |
 | **How closely they track** | The bivariate OLS fits from Figures 1 and 2, with confidence bands and a data-table view |
-| **Every feature the model rated** | All 20 items, including those excluded, each carrying its validation status |
-| **How far to trust the model** | Table S2: agreement, Gwet's AC1, sensitivity and specificity against human audits |
+| **What the model was looking at** | Two audited panoramas for the selected feature — one rated present, one absent |
 | **What residents and stakeholders said** | Published quotations paired with the quantitative result each speaks to |
+
+## Street View panoramas
+
+`build/panoramas.py` curates **16 example panoramas** — one rated present and one rated
+absent for each of the eight features — from the audited imagery:
+
+```bash
+python build/panoramas.py --images "/path/to/Validation data/images" \
+                          --contact-sheet /tmp/sheet.jpg
+```
+
+Candidates are filtered to unambiguous cases (a corroborating rating must agree), shuffled
+with a fixed seed, and constrained so no panorama is used twice. `PICKS` selects an index
+into each slot's pool and `OVERRIDES` pins a specific `image_id`; `--contact-sheet` writes
+a single sheet of the current selection for review. The two tree-canopy examples are pinned
+because St. Louis Street View imagery was largely captured with the trees bare, so a typical
+segment rated "high canopy" does not look like one — those two were chosen by scoring
+candidates on an excess-green index over the overhead band.
+
+> **Before publishing:** these are Google Street View images. Each is attributed on the page
+> ("Imagery © Google", plus Google's own watermark) and links to the same location in Street
+> View, which is how the literature reproduces this imagery. Redistribution of Maps content is
+> nonetheless restricted by the Google Maps Platform Terms of Service. Confirm you are
+> comfortable with this before making the repository public, or drop `data/panoramas/` and
+> keep the Street View links alone.
 
 ## Typography
 
@@ -69,6 +93,8 @@ python3 -m http.server 8000     # then open http://localhost:8000
 | `data/tracts.geojson` | 104 | Tract boundaries (WGS 84), simplified, with the attributes above |
 | `data/neighborhoods.geojson` | 4 | Outlines for North City, Central West End, Tower Grove, Dutchtown |
 | `data/dashboard.json` | — | Everything the page renders, including all fitted models |
+| `data/panoramas.json` | 16 | Manifest for the example panoramas: labels, coordinates, Street View links |
+| `data/panoramas/` | 16 | The example panoramas themselves (1400×350 JPEG) |
 
 ## How to read these numbers
 

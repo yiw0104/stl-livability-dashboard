@@ -1,0 +1,150 @@
+{
+ "attribution": "Imagery \u00a9 Google",
+ "note": "One example panorama per rating, drawn from the segments the model audited. Each links to the same location in Street View, where the current imagery may differ from what was rated.",
+ "items": {
+  "crossing": {
+   "present": {
+    "file": "data/panoramas/crossing_present.jpg",
+    "label": "Marked pedestrian crossing",
+    "image_id": 9155,
+    "lat": 38.622225,
+    "lon": -90.19113,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.622225,-90.191130"
+   },
+   "absent": {
+    "file": "data/panoramas/crossing_absent.jpg",
+    "label": "No marked crossing",
+    "image_id": 3680,
+    "lat": 38.694873,
+    "lon": -90.258383,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.694873,-90.258383"
+   }
+  },
+  "curb_ramp": {
+   "present": {
+    "file": "data/panoramas/curb_ramp_present.jpg",
+    "label": "Curb ramp present",
+    "image_id": 7993,
+    "lat": 38.637095,
+    "lon": -90.209845,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.637095,-90.209845"
+   },
+   "absent": {
+    "file": "data/panoramas/curb_ramp_absent.jpg",
+    "label": "No curb ramp",
+    "image_id": 8461,
+    "lat": 38.641327,
+    "lon": -90.202311,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.641327,-90.202311"
+   }
+  },
+  "streetlights": {
+   "present": {
+    "file": "data/panoramas/streetlights_present.jpg",
+    "label": "Ample street lighting",
+    "image_id": 8889,
+    "lat": 38.66413,
+    "lon": -90.196336,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.664130,-90.196336"
+   },
+   "absent": {
+    "file": "data/panoramas/streetlights_absent.jpg",
+    "label": "No street lighting",
+    "image_id": 2964,
+    "lat": 38.589967,
+    "lon": -90.265262,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.589967,-90.265262"
+   }
+  },
+  "no_hazard": {
+   "present": {
+    "file": "data/panoramas/no_hazard_present.jpg",
+    "label": "No major tripping hazards",
+    "image_id": 8636,
+    "lat": 38.647764,
+    "lon": -90.200591,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.647764,-90.200591"
+   },
+   "absent": {
+    "file": "data/panoramas/no_hazard_absent.jpg",
+    "label": "Major tripping hazards",
+    "image_id": 8391,
+    "lat": 38.666847,
+    "lon": -90.204695,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.666847,-90.204695"
+   }
+  },
+  "continuity": {
+   "present": {
+    "file": "data/panoramas/continuity_present.jpg",
+    "label": "Continuous pavement",
+    "image_id": 3482,
+    "lat": 38.604495,
+    "lon": -90.259916,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.604495,-90.259916"
+   },
+   "absent": {
+    "file": "data/panoramas/continuity_absent.jpg",
+    "label": "Discontinuous pavement",
+    "image_id": 5742,
+    "lat": 38.712323,
+    "lon": -90.236609,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.712323,-90.236609"
+   }
+  },
+  "pavement": {
+   "present": {
+    "file": "data/panoramas/pavement_present.jpg",
+    "label": "Pavement present",
+    "image_id": 3189,
+    "lat": 38.554915,
+    "lon": -90.262576,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.554915,-90.262576"
+   },
+   "absent": {
+    "file": "data/panoramas/pavement_absent.jpg",
+    "label": "No pavement",
+    "image_id": 8014,
+    "lat": 38.665386,
+    "lon": -90.210014,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.665386,-90.210014"
+   }
+  },
+  "canopy": {
+   "present": {
+    "file": "data/panoramas/canopy_present.jpg",
+    "label": "High tree canopy overhead",
+    "image_id": 5039,
+    "lat": 38.601046,
+    "lon": -90.243667,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.601046,-90.243667"
+   },
+   "absent": {
+    "file": "data/panoramas/canopy_absent.jpg",
+    "label": "Low tree canopy overhead",
+    "image_id": 4668,
+    "lat": 38.615582,
+    "lon": -90.248035,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.615582,-90.248035"
+   }
+  },
+  "facade": {
+   "present": {
+    "file": "data/panoramas/facade_present.jpg",
+    "label": "Well-maintained facades",
+    "image_id": 2805,
+    "lat": 38.541366,
+    "lon": -90.266502,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.541366,-90.266502"
+   },
+   "absent": {
+    "file": "data/panoramas/facade_absent.jpg",
+    "label": "Poorly maintained facades",
+    "image_id": 6140,
+    "lat": 38.602111,
+    "lon": -90.231565,
+    "streetview": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=38.602111,-90.231565"
+   }
+  }
+ }
+}

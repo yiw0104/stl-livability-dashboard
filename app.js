@@ -6,8 +6,8 @@
 (function () {
   "use strict";
 
-  var D = null, TRACTS = null, HOODS = null;
-  var state = { feature: "facade", correlate: "pct_black", scatterView: "chart", valView: "chart" };
+  var D = null, TRACTS = null, HOODS = null, PANO = null;
+  var state = { feature: "facade", correlate: "pct_black", scatterView: "chart" };
   var byGeoid = {};
   var tip = document.getElementById("tip");
 
@@ -370,179 +370,51 @@
     return wrap;
   }
 
-  // ---------------------------------------------------------- inventory
-  var STATUS = {
-    validated:    { color: "--good",     label: "Validated", icon: "check" },
-    not_assessed: { color: "--warning",  label: "No human item", icon: "alert" },
-    excluded_var: { color: "--text-muted", label: "Excluded — no variation", icon: "minus" },
-    excluded_val: { color: "--critical", label: "Excluded — failed check", icon: "cross" }
-  };
-  function icon(kind, color) {
-    var ns = "http://www.w3.org/2000/svg";
-    var s = document.createElementNS(ns, "svg");
-    s.setAttribute("width", "12"); s.setAttribute("height", "12"); s.setAttribute("viewBox", "0 0 12 12");
-    var p = document.createElementNS(ns, "path");
-    var d = { check: "M2.5 6.5 L5 9 L9.5 3.5", cross: "M3 3 L9 9 M9 3 L3 9",
-              alert: "M6 2.5 L6 7 M6 9.2 L6 9.6", minus: "M3 6 L9 6" }[kind];
-    p.setAttribute("d", d);
-    p.setAttribute("stroke", color);
-    p.setAttribute("stroke-width", "1.8");
-    p.setAttribute("fill", "none");
-    p.setAttribute("stroke-linecap", "round");
-    p.setAttribute("stroke-linejoin", "round");
-    s.appendChild(p);
-    if (kind === "alert") {
-      var c = document.createElementNS(ns, "circle");
-      c.setAttribute("cx", "6"); c.setAttribute("cy", "6"); c.setAttribute("r", "4.6");
-      c.setAttribute("stroke", color); c.setAttribute("stroke-width", "1.2"); c.setAttribute("fill", "none");
-      s.appendChild(c);
-    }
-    return s;
-  }
-  function statusBadge(status) {
-    var s = STATUS[status];
-    var b = el("span", { class: "badge", title: s.label });
-    b.appendChild(icon(s.icon, css(s.color)));
-    b.appendChild(document.createTextNode(s.label));
-    return b;
-  }
+  // ---------------------------------------------------------- panoramas
+  function renderPanoramas(root) {
+    if (!PANO || !PANO.items[state.feature]) return;
+    var fm = featureMeta(state.feature);
+    var pair = PANO.items[state.feature];
 
-  function renderInventory(root) {
     var sec = el("section");
     sec.appendChild(el("div", { class: "sec-head" }, [
-      el("h2", { text: "Every feature the model rated" }),
-      el("p", { class: "sec", text: "All 20 items, including the ones that did not survive screening. "
-        + "A feature the model reported confidently is not the same as a feature it got right — the "
-        + "status column carries that distinction, and the excluded items are drawn in grey." })
-    ]));
-    var card = el("div", { class: "card pad" });
-    var head = el("div", { class: "inv-head" });
-    ["Feature", "Prevalence across 7,848 segments", "%", "Status"].forEach(function (h) {
-      head.appendChild(el("span", { text: h }));
-    });
-    card.appendChild(head);
-
-    D.inventory.forEach(function (item) {
-      var excluded = item.status.indexOf("excluded") === 0;
-      var row = el("div", { class: "inv-row" });
-      row.appendChild(el("div", { class: "inv-label", text: item.label }));
-      var track = el("div", { class: "inv-track" });
-      var bar = el("div", { class: "inv-bar" + (excluded ? " off" : "") });
-      bar.style.width = item.pct + "%";
-      track.appendChild(bar);
-      row.appendChild(track);
-      row.appendChild(el("div", { class: "inv-val", text: item.pct + "%" }));
-      row.appendChild(statusBadge(item.status));
-      row.title = item.label + ": " + item.n.toLocaleString() + " of "
-        + item.total.toLocaleString() + " segments"
-        + (item.ac1 !== null ? " · AC1 " + item.ac1.toFixed(2) : "");
-      card.appendChild(row);
-    });
-    sec.appendChild(card);
-    root.appendChild(sec);
-  }
-
-  // --------------------------------------------------------- validation
-  function renderValidation(root) {
-    var v = D.validation;
-    var sec = el("section");
-    sec.appendChild(el("div", { class: "sec-head" }, [
-      el("h2", { text: "How far to trust the model" }),
-      el("p", { class: "sec", text: "164 panoramas were audited by five trained raters and compared "
-        + "with the model's own ratings. Two trained humans agreed with each other on "
-        + v.pooled_human_agreement + "% of paired ratings — that is the ceiling this task allows, "
-        + "not 100%." })
+      el("h2", { text: "What the model was looking at" }),
+      el("p", { class: "sec", text: "Two of the audited panoramas, one the model rated each way "
+        + "for " + fm.label.toLowerCase() + ". Each is a single Street View location stitched "
+        + "from the four 90° views the model scored separately." })
     ]));
 
-    var tabs = el("div", { class: "tabs", role: "tablist" });
-    [["chart", "Agreement"], ["table", "Coherence checks"]].forEach(function (t) {
-      var b = el("button", { class: "tab", type: "button", role: "tab", text: t[1],
-        "aria-selected": state.valView === t[0] ? "true" : "false" });
-      b.addEventListener("click", function () { state.valView = t[0]; rerender(); });
-      tabs.appendChild(b);
-    });
-    sec.appendChild(tabs);
+    var grid = el("div", { class: "pano-grid" });
+    [["present", "--accent"], ["absent", "--alt-3"]].forEach(function (spec) {
+      var item = pair[spec[0]];
+      if (!item) return;
+      var fig = el("figure", { class: "card pano" });
 
-    var card = el("div", { class: "card pad" });
-    card.appendChild(state.valView === "chart" ? validationTable(v) : coherenceTable(v));
-    sec.appendChild(card);
+      var head = el("figcaption", { class: "pano-head" });
+      var dot = el("i"); dot.style.background = css(spec[1]); head.appendChild(dot);
+      head.appendChild(el("span", { text: item.label }));
+      fig.appendChild(head);
+
+      var img = el("img", {
+        src: item.file, width: "1400", height: "350", loading: "lazy", decoding: "async",
+        alt: "Street View panorama of a St. Louis street segment the model rated as: " + item.label
+      });
+      fig.appendChild(img);
+
+      var cap = el("figcaption", { class: "pano-cap" });
+      cap.appendChild(document.createTextNode(
+        "Segment " + item.image_id + " · " + item.lat.toFixed(4) + ", " + item.lon.toFixed(4)
+        + " · Imagery © Google · "));
+      var a = el("a", { href: item.streetview, target: "_blank", rel: "noopener noreferrer",
+                        text: "open in Street View" });
+      cap.appendChild(a);
+      fig.appendChild(cap);
+
+      grid.appendChild(fig);
+    });
+    sec.appendChild(grid);
+    sec.appendChild(el("p", { class: "pano-note", text: PANO.note }));
     root.appendChild(sec);
-  }
-
-  function ac1Cell(ac1) {
-    var cell = el("div", { class: "ac1-cell" });
-    var track = el("div", { class: "ac1-track" });
-    track.appendChild(el("div", { class: "ac1-zero" }));
-    var bar = el("div", { class: "ac1-bar" });
-    var w = Math.abs(ac1) / 1 * 43;
-    bar.style.width = w + "px";
-    if (ac1 >= 0) { bar.style.left = "43px"; bar.style.background = css("--accent"); bar.style.borderRadius = "0 2px 2px 0"; }
-    else { bar.style.left = (43 - w) + "px"; bar.style.background = css("--pole-neg"); bar.style.borderRadius = "2px 0 0 2px"; }
-    track.appendChild(bar);
-    cell.appendChild(track);
-    cell.appendChild(el("span", { text: ac1.toFixed(2) }));
-    return cell;
-  }
-
-  function validationTable(v) {
-    var wrap = el("div", { class: "scroll" });
-    var t = el("table");
-    var head = el("tr");
-    ["Feature", "n", "Human says present", "Model says present", "Agreement",
-     "AC1 (−0.9 ← 0 → +1)", "Sensitivity", "Specificity", "Status"]
-      .forEach(function (h) { head.appendChild(el("th", { text: h })); });
-    t.appendChild(el("thead", null, [head]));
-    var tb = el("tbody");
-    v.vlm.forEach(function (r) {
-      var tr = el("tr");
-      tr.appendChild(el("td", { text: r.feature }));
-      tr.appendChild(el("td", { text: String(r.n) }));
-      tr.appendChild(el("td", { text: fmt(r.human_pct) + "%" }));
-      tr.appendChild(el("td", { text: fmt(r.vlm_pct) + "%" }));
-      tr.appendChild(el("td", { text: fmt(r.agreement) + "%" }));
-      var ac = el("td"); ac.appendChild(ac1Cell(r.ac1)); tr.appendChild(ac);
-      tr.appendChild(el("td", { text: fmt(r.sens) + "%" }));
-      tr.appendChild(el("td", { text: fmt(r.spec) + "%" }));
-      var st = el("td"); st.appendChild(statusBadge(r.status)); tr.appendChild(st);
-      tb.appendChild(tr);
-    });
-    t.appendChild(tb);
-    wrap.appendChild(t);
-
-    wrap.appendChild(el("p", { class: "interp", html:
-      "Sensitivity runs high and specificity low across the board: the model's error is "
-      + "systematic, not random — it reports features as <em>present</em>. Two measures agreed "
-      + "no better than chance and were dropped. Cycling infrastructure had passed the "
-      + "variation screen, which is why variation alone is not a sufficient filter." }));
-    return wrap;
-  }
-
-  function coherenceTable(v) {
-    var wrap = el("div", { class: "scroll" });
-    var t = el("table");
-    var head = el("tr");
-    ["Check", "Group", "%", "Group", "%", "Test"].forEach(function (h) {
-      head.appendChild(el("th", { text: h }));
-    });
-    t.appendChild(el("thead", null, [head]));
-    var tb = el("tbody");
-    v.coherence.forEach(function (r) {
-      var tr = el("tr");
-      tr.appendChild(el("td", { text: r.feature }));
-      tr.appendChild(el("td", { text: r.group_a }));
-      tr.appendChild(el("td", { text: fmt(r.pct_a) + "%" }));
-      tr.appendChild(el("td", { text: r.group_b }));
-      tr.appendChild(el("td", { text: fmt(r.pct_b) + "%" }));
-      tr.appendChild(el("td", { text: "p < 0.001" }));
-      tb.appendChild(tr);
-    });
-    t.appendChild(tb);
-    wrap.appendChild(t);
-    wrap.appendChild(el("p", { class: "interp",
-      text: "Features move in the directions theory predicts, and related features co-occur. "
-          + "Land-use type is itself model-derived, so these checks establish internal coherence "
-          + "rather than correspondence with an external criterion." }));
-    return wrap;
   }
 
   // ----------------------------------------------------------- evidence
@@ -633,8 +505,7 @@
     renderFilters(app);   // scopes the maps and the scatter below it
     renderMaps(app);
     renderScatter(app);
-    renderInventory(app);
-    renderValidation(app);
+    renderPanoramas(app);
     renderEvidence(app);
     renderNotes(app);
   }
@@ -643,9 +514,11 @@
   Promise.all([
     fetch("data/dashboard.json").then(function (r) { return r.json(); }),
     fetch("data/tracts.geojson").then(function (r) { return r.json(); }),
-    fetch("data/neighborhoods.geojson").then(function (r) { return r.json(); })
+    fetch("data/neighborhoods.geojson").then(function (r) { return r.json(); }),
+    fetch("data/panoramas.json").then(function (r) { return r.json(); })
+      .catch(function () { return null; })   // panel is optional
   ]).then(function (res) {
-    D = res[0]; TRACTS = res[1]; HOODS = res[2];
+    D = res[0]; TRACTS = res[1]; HOODS = res[2]; PANO = res[3];
     var popOf = {};
     TRACTS.features.forEach(function (f) { popOf[f.properties.GEOID] = f.properties.pop; });
     D.points.forEach(function (p) {

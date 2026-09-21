@@ -209,6 +209,32 @@ def fit(x, y):
     }
 
 
+def pole_of_inaccessibility(poly, steps=48):
+    """Centre of the largest circle that fits inside the polygon.
+
+    Used to anchor neighbourhood labels. A representative point or centroid gets
+    pulled toward narrow spurs — North City's northern arm drags its label to the
+    top of the shape — whereas this lands in the widest part of the body, which is
+    where a reader expects the name to sit.
+
+    Binary-searches the inward buffer distance: the last non-empty erosion of the
+    polygon is its innermost core.
+    """
+    minx, miny, maxx, maxy = poly.bounds
+    lo, hi = 0.0, max(maxx - minx, maxy - miny) / 2.0
+    best = poly.representative_point()
+    for _ in range(steps):
+        mid = (lo + hi) / 2.0
+        eroded = poly.buffer(-mid)
+        if eroded.is_empty:
+            hi = mid
+        else:
+            part = (max(eroded.geoms, key=lambda g: g.area)
+                    if eroded.geom_type == "MultiPolygon" else eroded)
+            best, lo = part.centroid, mid
+    return best
+
+
 def quantize(geom, nd=5):
     """Round coordinates in a GeoJSON geometry dict to nd decimals (~1 m at this latitude)."""
     def walk(c):
@@ -274,7 +300,7 @@ def main():
     ).to_crs(4326)
     hgeo = json.loads(hoods.set_geometry(hoods.geometry.simplify(0.0002, preserve_topology=True)).to_json())
     for f in hgeo["features"]:
-        pt = gpd.GeoSeries([hoods.loc[int(f["id"]), "geometry"]], crs=4326).representative_point().iloc[0]
+        pt = pole_of_inaccessibility(hoods.loc[int(f["id"]), "geometry"])
         f["properties"] = {
             "name": f["properties"]["NHD_NAME"],
             "cx": round(pt.x, 5),
