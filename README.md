@@ -18,12 +18,19 @@ beside the resident and stakeholder quotations published in the paper.
 
 | Panel | What it shows |
 |---|---|
-| **What the audit found** | Headline prevalence: lighting and pavement are widespread, curb ramps and crossings are not |
 | **Where the gaps are** | Two linked tract choropleths — any feature against any tract characteristic |
 | **How closely they track** | The bivariate OLS fits from Figures 1 and 2, with confidence bands and a data-table view |
 | **Every feature the model rated** | All 20 items, including those excluded, each carrying its validation status |
 | **How far to trust the model** | Table S2: agreement, Gwet's AC1, sensitivity and specificity against human audits |
 | **What residents and stakeholders said** | Published quotations paired with the quantitative result each speaks to |
+
+## Typography
+
+Headings, controls, tables and chart labels are set in Franklin Gothic, falling back to
+the self-hosted [Libre Franklin](vendor/README.md) where it is not installed. Descriptions,
+captions and quotations are set in Georgia, italic for captions and pull-quotes.
+
+The page follows the reader's system light/dark setting; there is no in-page theme control.
 
 ## Reproducing the data layer
 

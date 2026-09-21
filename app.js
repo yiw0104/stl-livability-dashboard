@@ -92,37 +92,6 @@
     d3.selectAll(".dot.hi").each(function () { this.parentNode.appendChild(this); });
   }
 
-  // ----------------------------------------------------------- KPI row
-  function renderKPI(root) {
-    var h = D.meta.headline;
-    var hero = el("div", { class: "card hero" });
-    hero.appendChild(el("div", { class: "hero-val", text: h.hero.value.toLocaleString() }));
-    hero.appendChild(el("div", { class: "hero-label", text: h.hero.label }));
-    hero.appendChild(el("div", { class: "hero-note",
-      text: "Across " + D.meta.n_tracts + " census tracts. A single manual pass of the same "
-          + "segments was estimated at 500–730 hours of trained-annotator time." }));
-
-    var tiles = el("div", { class: "tiles" });
-    h.tiles.forEach(function (t) {
-      var c = el("div", { class: "card tile" });
-      c.appendChild(el("div", { class: "tile-label", text: t.label }));
-      c.appendChild(el("div", { class: "tile-val", text: t.pct + "%" }));
-      var meter = el("div", { class: "tile-meter" });
-      var fill = el("i"); fill.style.width = t.pct + "%";
-      meter.appendChild(fill); c.appendChild(meter);
-      tiles.appendChild(c);
-    });
-
-    var sec = el("section");
-    sec.appendChild(el("div", { class: "sec-head" }, [
-      el("h2", { text: "What the audit found" }),
-      el("p", { class: "sec", text: "Baseline infrastructure is widespread; the features that make a "
-        + "street usable for a wheelchair, a stroller, or a slow walker are not." })
-    ]));
-    sec.appendChild(el("div", { class: "kpi" }, [hero, tiles]));
-    root.appendChild(sec);
-  }
-
   // ------------------------------------------------------------ filters
   function renderFilters(root) {
     var f = el("div", { class: "card filters" });
@@ -661,8 +630,7 @@
   function rerender() {
     var app = document.getElementById("app");
     app.innerHTML = "";
-    renderKPI(app);
-    renderFilters(app);
+    renderFilters(app);   // scopes the maps and the scatter below it
     renderMaps(app);
     renderScatter(app);
     renderInventory(app);
@@ -671,27 +639,7 @@
     renderNotes(app);
   }
 
-  // -------------------------------------------------------------- theme
-  var MODES = ["system", "light", "dark"];
-  function applyTheme(mode) {
-    if (mode === "system") document.documentElement.removeAttribute("data-theme");
-    else document.documentElement.setAttribute("data-theme", mode);
-    document.getElementById("themeBtn").textContent = "Theme: " + mode;
-    try { localStorage.setItem("stl-theme", mode); } catch (e) { /* private mode */ }
-  }
-  function initTheme() {
-    var saved = "system";
-    try { saved = localStorage.getItem("stl-theme") || "system"; } catch (e) { /* private mode */ }
-    applyTheme(saved);
-    document.getElementById("themeBtn").addEventListener("click", function () {
-      var cur = MODES.indexOf(this.textContent.replace("Theme: ", ""));
-      applyTheme(MODES[(cur + 1) % MODES.length]);
-      if (D) rerender();
-    });
-  }
-
   // --------------------------------------------------------------- boot
-  initTheme();
   Promise.all([
     fetch("data/dashboard.json").then(function (r) { return r.json(); }),
     fetch("data/tracts.geojson").then(function (r) { return r.json(); }),
