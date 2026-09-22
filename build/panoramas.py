@@ -195,9 +195,9 @@ def main():
     with open(os.path.join(out, "panoramas.json"), "w") as fh:
         json.dump({
             "attribution": "Imagery © Google",
-            "note": ("One example panorama per rating, drawn from the segments the model "
-                     "audited. Each links to the same location in Street View, where the "
-                     "current imagery may differ from what was rated."),
+            "note": ("These are real photographs from the study, not illustrations. Each one "
+                     "links to the same spot in Street View today \u2014 Google may have "
+                     "re-photographed the street since, so it might not look the same."),
             "items": manifest,
         }, fh, indent=1)
 

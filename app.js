@@ -385,9 +385,9 @@
     var sec = el("section");
     sec.appendChild(el("div", { class: "sec-head" }, [
       el("h2", { text: "What the AI model was looking at" }),
-      el("p", { class: "sec", text: "Two of the audited panoramas, one the model rated each way "
-        + "for " + fm.label.toLowerCase() + ". Each is a single Street View location stitched "
-        + "from the four 90° views the model scored separately." })
+      el("p", { class: "sec", text: "Two real examples for " + fm.label.toLowerCase()
+        + ": one street the AI rated each way. Each picture shows a single spot, with the "
+        + "four directions the AI looked at laid side by side." })
     ]));
 
     var grid = el("div", { class: "pano-grid" });
@@ -484,8 +484,8 @@
 
     sec.appendChild(el("footer", { html:
       "Favar&atilde;o Le&atilde;o AL, Wang Y, Banda BF, Balogun M, Xing E, Gudapati S, Rios-Hernandez M, "
-      + "Jacobs N, Reis RS. <em>Exploring spatial inequities and livability: a mixed-methods study using "
-      + "artificial intelligence and community insights.</em> Journal of Urban Health, 2026.<br>" }));
+      + "Jacobs N, Reis RS. (2026). Exploring spatial inequities and livability: a mixed-methods study using "
+      + "artificial intelligence and community insights. <i>Journal of Urban Health.</i> [doi to be added]<br>" }));
     root.appendChild(sec);
   }
 
