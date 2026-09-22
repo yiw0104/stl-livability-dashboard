@@ -43,10 +43,16 @@ FEATURES = [
     ("h_tcanopy",  "canopy",       "High tree canopy coverage", 1),
 ]
 
+# (column, display label, unit, axis caption, mid-sentence phrase)
+# The phrase is the label as it reads inside running prose — lower-cased except
+# for the proper nouns, which a naive .toLowerCase() in the page would mangle.
 CORRELATES = [
-    ("pct_black",  "Non-Hispanic Black population", "%", "% of tract population"),
-    ("medinck",    "Median household income",       "k", "$1,000s"),
-    ("pct_vacant", "Vacant housing units",          "%", "% of tract housing units"),
+    ("pct_black",  "Non-Hispanic Black population", "%", "% of tract population",
+     "non-Hispanic Black residents"),
+    ("medinck",    "Median household income",       "k", "$1,000s",
+     "median household income"),
+    ("pct_vacant", "Vacant housing units",          "%", "% of tract housing units",
+     "vacant housing units"),
 ]
 
 # Segment-level descriptive table (Table 1 / Table S1). Each entry maps a column
@@ -343,7 +349,7 @@ def main():
 
     # -------------------------------------------------------- associations
     assoc = {}
-    for xcol, xlabel, xunit, xaxis in CORRELATES:
+    for xcol, xlabel, xunit, xaxis, _phrase in CORRELATES:
         for ycol, ykey, ylabel, _ in FEATURES:
             assoc[f"{ykey}|{xcol}"] = fit(tracts[xcol], tracts[ycol])
 
@@ -364,7 +370,8 @@ def main():
         "n_tracts_income": int(tracts["medinck"].notna().sum()),
         "features": [{"key": k, "label": l, "col": c} for c, k, l, _ in FEATURES],
         "correlates": [
-            {"key": c, "label": l, "unit": u, "axis": a} for c, l, u, a in CORRELATES
+            {"key": c, "label": l, "unit": u, "axis": a, "phrase": ph}
+            for c, l, u, a, ph in CORRELATES
         ],
         "headline": {
             "hero": {"value": int(len(seg)), "label": "street segments audited"},
@@ -414,7 +421,7 @@ def main():
           f"(median {int(tracts['n_seg'].median())} segments/tract, "
           f"min {int(tracts['n_seg'].min())}, max {int(tracts['n_seg'].max())})")
     print("\nRegression check (should match Figures 1 and 2):")
-    for xcol, xlabel, _, _ in CORRELATES[:2]:
+    for xcol, xlabel, _, _, _ in CORRELATES[:2]:
         print(f"  {xlabel}")
         for ycol, ykey, ylabel, _ in FEATURES:
             a = assoc[f"{ykey}|{xcol}"]

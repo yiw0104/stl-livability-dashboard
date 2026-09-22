@@ -68,7 +68,7 @@
     var fm = featureMeta(state.feature), cm = correlateMeta(state.correlate);
     var box = el("div");
     box.appendChild(el("div", { class: "t-title", text: "Tract " + geoid.slice(-6) }));
-    [[fm.label, fmt(p[state.feature]) + "% of segments", css("--seq-3")],
+    [[fm.label, fmt(p[state.feature]) + "% of street segments", css("--seq-3")],
      [cm.label, fmtCorrelate(correlateValue(p, state.correlate), state.correlate), css("--alt-3")]
     ].forEach(function (row) {
       var key = el("span", { class: "t-key" });
@@ -77,7 +77,7 @@
       var r = el("div", { class: "t-row" }, [key, el("span", { class: "t-val", text: row[1] })]);
       box.appendChild(r);
     });
-    box.appendChild(el("div", { class: "t-foot", text: p.n + " segments audited · " + p.pop_label }));
+    box.appendChild(el("div", { class: "t-foot", text: p.n + " street segments audited · " + p.pop_label }));
     return box;
   }
 
@@ -113,9 +113,9 @@
     f.appendChild(el("div", { class: "field" }, [
       el("label", { for: "featSel", text: "Built-environment feature" }), fsel]));
     f.appendChild(el("div", { class: "field" }, [
-      el("label", { for: "corrSel", text: "Compare against" }), csel]));
+      el("label", { for: "corrSel", text: "Race / Income / Vacancy" }), csel]));
     f.appendChild(el("p", { class: "filter-note",
-      text: "Both maps, the scatter plot and its statistics all follow these two controls." }));
+      text: "Scroll down for maps and descriptive statistics." }));
     root.appendChild(f);
   }
 
@@ -129,7 +129,7 @@
     var fm = featureMeta(state.feature), cm = correlateMeta(state.correlate);
 
     [{ kind: "seq", accessor: function (p) { return p.properties[fm.col]; },
-       title: fm.label, sub: "% of audited segments in the tract", labels: true, unit: "%" },
+       title: fm.label, sub: "% of audited street segments in the tract", labels: true, unit: "%" },
      { kind: "alt", accessor: function (p) { return p.properties[state.correlate]; },
        title: cm.label, sub: cm.axis, labels: false, unit: cm.unit === "k" ? "k" : "%" }
     ].forEach(function (spec) {
@@ -196,9 +196,9 @@
 
     var sec = el("section");
     sec.appendChild(el("div", { class: "sec-head" }, [
-      el("h2", { text: "Where the gaps are" }),
-      el("p", { class: "sec", text: "The same 104 tracts, drawn twice. Hover any tract to read both "
-        + "values at once; the four neighbourhoods named in the paper are outlined." })
+      el("h2", { text: "Built Environment Feature vs. Race/Income/Vacancy" }),
+      el("p", { class: "sec", text: "Hover any tract to read both "
+        + "values at once." })
     ]));
     sec.appendChild(maps);
     root.appendChild(sec);
@@ -213,8 +213,7 @@
     var sec = el("section");
     sec.appendChild(el("div", { class: "sec-head" }, [
       el("h2", { text: "How closely they track" }),
-      el("p", { class: "sec", text: "Each dot is one census tract. The line is the bivariate "
-        + "ordinary-least-squares fit reported in the paper, shaded with its 95% confidence band." })
+      el("p", { class: "sec", text: "Each dot is one census tract. The line shows the overall trend, and the shaded band shows how certain that trend is." })
     ]));
 
     var tabs = el("div", { class: "tabs", role: "tablist" });
@@ -307,7 +306,7 @@
     g.append("text").attr("class", "axis-txt")
       .attr("transform", "rotate(-90)").attr("x", -ih / 2).attr("y", -38)
       .attr("text-anchor", "middle")
-      .text("% of segments — " + fm.label);
+      .text("% of street segments having " + fm.label);
 
     var box = el("div");
     box.appendChild(svg.node());
@@ -328,13 +327,20 @@
         el("span", { text: r[0] }), el("span", { text: r[1] })]));
     });
 
-    var step = cm.unit === "k" ? "$1,000 of median household income" : "1 percentage point";
-    var dir = a.slope >= 0 ? "rises" : "falls";
-    box.appendChild(el("p", { class: "interp",
-      text: "Each " + step + " more is associated with a share of segments having "
-          + fm.label.toLowerCase() + " that " + dir + " by "
-          + Math.abs(a.slope).toFixed(2) + " percentage points"
-          + (a.p < 0.05 ? "." : ", though the association is not statistically significant.") }));
+    // Name the variable the step is measured in — "each 1 percentage point more"
+    // on its own leaves the reader to guess. cm.phrase carries the label as it
+    // reads mid-sentence, with its proper nouns intact.
+    var phrase = cm.phrase || cm.label.toLowerCase();
+    var step = cm.unit === "k" ? "$1,000 more " + phrase
+                               : "1 percentage point more " + phrase;
+    var size = Math.abs(a.slope).toFixed(2);
+    var share = " share of street segments with " + fm.label.toLowerCase();
+    var caveat = a.p < 0.05 ? "." : " — though this association is not statistically significant.";
+    var sentence = size === "0.00"
+      ? "A tract with " + step + " has essentially the same" + share + caveat
+      : "A tract with " + step + " has, on average, a " + size + " percentage point "
+        + (a.slope >= 0 ? "higher" : "lower") + share + caveat;
+    box.appendChild(el("p", { class: "interp", text: sentence }));
 
     if (state.feature === "canopy") {
       box.appendChild(el("p", { class: "flag", text: D.meta.notes.canopy }));
@@ -351,7 +357,7 @@
     var wrap = el("div", { class: "scroll" });
     var t = el("table");
     var head = el("tr");
-    ["Tract", "Segments audited", fm.label + " (%)", cm.label + " (" + cm.axis + ")"]
+    ["Tract", "Street segments audited", fm.label + " (%)", cm.label + " (" + cm.axis + ")"]
       .forEach(function (h) { head.appendChild(el("th", { text: h })); });
     t.appendChild(el("thead", null, [head]));
     var tb = el("tbody");
@@ -378,7 +384,7 @@
 
     var sec = el("section");
     sec.appendChild(el("div", { class: "sec-head" }, [
-      el("h2", { text: "What the model was looking at" }),
+      el("h2", { text: "What the AI model was looking at" }),
       el("p", { class: "sec", text: "Two of the audited panoramas, one the model rated each way "
         + "for " + fm.label.toLowerCase() + ". Each is a single Street View location stitched "
         + "from the four 90° views the model scored separately." })
@@ -403,7 +409,7 @@
 
       var cap = el("figcaption", { class: "pano-cap" });
       cap.appendChild(document.createTextNode(
-        "Segment " + item.image_id + " · " + item.lat.toFixed(4) + ", " + item.lon.toFixed(4)
+        "Street segment " + item.image_id + " · " + item.lat.toFixed(4) + ", " + item.lon.toFixed(4)
         + " · Imagery © Google · "));
       var a = el("a", { href: item.streetview, target: "_blank", rel: "noopener noreferrer",
                         text: "open in Street View" });
@@ -439,7 +445,6 @@
       tag.appendChild(document.createTextNode(k.label));
       c.appendChild(tag);
       c.appendChild(el("p", { class: "ev-q", text: "“" + e.quote + "”" }));
-      c.appendChild(el("div", { class: "ev-src", text: e.source + " · " + e.theme }));
       var find = el("div", { class: "ev-find" });
       find.appendChild(el("b", { text: "In the audit data" }));
       find.appendChild(document.createTextNode(e.pairs_with));
@@ -456,45 +461,31 @@
     sec.appendChild(el("div", { class: "sec-head" }, [el("h2", { text: "Reading these numbers" })]));
     var card = el("div", { class: "card pad" });
     var notes = el("div", { class: "notes" });
-    [["Tract-level, not person-level",
-      "Every association here is between tract aggregates. It describes places, not the people in "
-      + "them; inferring individual experience from these slopes is an ecological fallacy."],
-     ["What the imagery can and cannot see",
-      "Street View coverage varies in date and completeness. Alleys and private streets are absent, "
-      + "and features are rated from the imagery available rather than from a field visit."],
-     ["Validated against audits, not ground truth",
-      "The reference standard is independent human rating of the same panoramas — itself imperfect, "
-      + "and virtual rather than field-based. Four features carried into the analyses had no "
-      + "comparable human item at all."],
-     ["Sources and vintage",
-      "Built-environment features: Google Street View imagery via the Street View Static API. "
-      + "Demographics: American Community Survey 2018–2022 5-year estimates, via IPUMS NHGIS. "
-      + "Boundaries: City of St. Louis Open Data."]
+    [["A census tract level study",
+      "Every comparison here is between census tracts — areas of a few thousand residents each. "
+      + "It describes overall quality of neighborhood streetscapes. "],
+     ["What the photos can and cannot show",
+      "The Street View photos were taken at different times, and coverage is patchy. Every rating comes from a photo, not from anyone "
+      + "walking the street in person."],
+     ["How we checked the AI",
+      "Trained researchers rated the same photos by hand, and we compared the two. Those people "
+      + "can be wrong too, and they were also working from photos rather than standing on the "
+      + "street."],
+     ["Where the data comes from",
+      "Street features: Google Street View photographs. Population, income and vacancy: the "
+      + "US Census Bureau's American Community Survey, 2018–2022 (via IPUMS NHGIS). Tract and "
+      + "neighborhood boundaries: City of St. Louis Open Data."]
     ].forEach(function (n) {
       notes.appendChild(el("div", { class: "note" }, [
         el("h3", { text: n[0] }), el("p", { text: n[1] })]));
     });
     card.appendChild(notes);
-
-    var dl = el("div", { class: "dl" });
-    [["data/tract_stats.csv", "Tract table (CSV)"],
-     ["data/segments.csv", "Segment ratings (CSV)"],
-     ["data/tracts.geojson", "Tract boundaries (GeoJSON)"],
-     ["data/dashboard.json", "Everything on this page (JSON)"]
-    ].forEach(function (d) {
-      dl.appendChild(el("a", { href: d[0], download: "", text: d[1] }));
-    });
-    card.appendChild(el("h3", { text: "Download the data", style: "margin-top:22px" }));
-    card.appendChild(dl);
     sec.appendChild(card);
 
     sec.appendChild(el("footer", { html:
       "Favar&atilde;o Le&atilde;o AL, Wang Y, Banda BF, Balogun M, Xing E, Gudapati S, Rios-Hernandez M, "
       + "Jacobs N, Reis RS. <em>Exploring spatial inequities and livability: a mixed-methods study using "
-      + "artificial intelligence and community insights.</em> Journal of Urban Health, 2026.<br>"
-      + "Figures regenerated from the analysis sources on " + D.meta.generated
-      + ". Interviews conducted under Washington University in St. Louis IRB #202406091; "
-      + "no transcript material beyond the published quotations appears here." }));
+      + "artificial intelligence and community insights.</em> Journal of Urban Health, 2026.<br>" }));
     root.appendChild(sec);
   }
 

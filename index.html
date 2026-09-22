@@ -132,7 +132,11 @@ header {
   color: var(--text-muted); margin-bottom: 11px;
 }
 .head-sub {
-  margin-top: 12px; max-width: 70ch; color: var(--text-secondary);
+  /* 1103px is where the citation block below wraps at full container width
+     (measured: 1102.8px of a 1132px content box), so the two align on the
+     right. Below ~1228px viewport the container is narrower than this and
+     the cap stops applying, which is what we want. */
+  margin-top: 12px; max-width: 1103px; color: var(--text-secondary);
   font-family: var(--font-text); font-size: 15.5px; line-height: 1.6;
 }
 .head-meta {
@@ -308,10 +312,6 @@ tbody tr:hover { background: var(--plane); }
   font-family: var(--font-text); font-style: italic;
   font-size: 16px; line-height: 1.55; color: var(--text-primary);
 }
-.ev-src {
-  margin-top: 9px; font-family: var(--font-ui); font-size: 11.5px;
-  color: var(--text-muted); letter-spacing: 0.01em;
-}
 .ev-find {
   margin-top: 15px; padding-top: 14px; border-top: 1px solid var(--grid);
   font-family: var(--font-text); font-size: 13px;
@@ -330,12 +330,6 @@ tbody tr:hover { background: var(--plane); }
   font-family: var(--font-text); font-size: 13px;
   color: var(--text-secondary); line-height: 1.6;
 }
-.dl { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.dl a {
-  font-size: 12px; text-decoration: none; color: var(--text-secondary);
-  border: 1px solid var(--border); border-radius: 7px; padding: 5px 10px; background: var(--plane);
-}
-.dl a:hover { border-color: var(--accent); color: var(--accent); }
 footer {
   border-top: 1px solid var(--border); padding-top: 20px;
   font-family: var(--font-text); font-size: 12.5px;
@@ -359,16 +353,19 @@ footer {
 
 <header>
   <div class="head-inner">
-    <div class="eyebrow">Journal of Urban Health &middot; Interactive companion</div>
-    <h1>Spatial inequities and livability in St.&nbsp;Louis</h1>
+    <div class="eyebrow"></div>
+    <h1>Measuring urban livability in St. Louis using AI and community insights</h1>
     <p class="head-sub">
-      A vision&ndash;language model audited <strong>7,848 street segments</strong> of the City of St.&nbsp;Louis
-      for micro-scale built-environment features. This dashboard puts those results beside the tract
-      demographics they track, and beside what residents and stakeholders said about the same streets.
+      In this study, we (1) measured urban livability using AI-assisted streetscape audits (N=7,848 street segments); 
+      (2) explored the distribution of livability features to identify and understand spatial inequities; and 
+      (3) captured community and stakeholder perspectives on how these inequities are produced and experienced, 
+      and perceptions of livability. 
     </p>
     <div class="head-meta">
-      <span><strong>Favar&atilde;o Le&atilde;o AL, Wang Y, Banda BF, Balogun M, Xing E, Gudapati S, Rios-Hernandez M, Jacobs N, Reis RS.</strong></span>
-      <span>Journal of Urban Health, 2026</span>
+      <span><strong>How to Cite: Leão, A. L. F., Wang, Y., Banda, B., Balogun, M., Xing, E., Gudapati, S., Rios-Hernandez, M., Jacobs, N., & Reis, R. 
+        (forthcoming). Exploring Spatial Inequities and Livability: A mixed-methods study using artificial intelligence and community insights. 
+       <i>Journal of Urban Health.</i> [doi to be added]
+</span>
     </div>
   </div>
 </header>
