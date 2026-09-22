@@ -434,7 +434,7 @@
     sec.appendChild(el("div", { class: "sec-head" }, [
       el("h2", { text: "What residents and stakeholders said" }),
       el("p", { class: "sec", text: "Each published quotation sits beside the quantitative result it "
-        + "speaks to. Where the two diverge, the divergence is the finding." })
+        + "speaks to." })
     ]));
     var grid = el("div", { class: "ev-grid" });
     D.evidence.forEach(function (e) {
