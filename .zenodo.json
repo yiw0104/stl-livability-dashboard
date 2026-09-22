@@ -5,15 +5,47 @@
   "access_right": "open",
   "license": "MIT",
   "creators": [
-    { "name": "Favarão Leão, Ana Luiza", "orcid": "0000-0002-0914-0937" },
-    { "name": "Wang, Yi", "orcid": "0000-0002-1486-5051" },
-    { "name": "Banda, Bernard F." },
-    { "name": "Balogun, Mariam" },
-    { "name": "Xing, Eric", "orcid": "0000-0002-3683-4280" },
-    { "name": "Gudapati, Sanketh" },
-    { "name": "Rios-Hernandez, Maryse" },
-    { "name": "Jacobs, Nathan", "orcid": "0000-0002-4242-8967" },
-    { "name": "Siqueira Reis, Rodrigo", "orcid": "0000-0002-9872-9865" }
+    {
+      "name": "Favarão Leão, Ana Luiza",
+      "orcid": "0000-0002-0914-0937",
+      "affiliation": "Washington University in St. Louis"
+    },
+    {
+      "name": "Wang, Yi",
+      "orcid": "0000-0002-1486-5051",
+      "affiliation": "Washington University in St. Louis"
+    },
+    {
+      "name": "Banda, Bernard F.",
+      "affiliation": "Washington University in St. Louis"
+    },
+    {
+      "name": "Balogun, Mariam",
+      "affiliation": "Washington University in St. Louis"
+    },
+    {
+      "name": "Xing, Eric",
+      "orcid": "0000-0002-3683-4280",
+      "affiliation": "Washington University in St. Louis"
+    },
+    {
+      "name": "Gudapati, Sanketh",
+      "affiliation": "Washington University in St. Louis"
+    },
+    {
+      "name": "Rios-Hernandez, Maryse",
+      "affiliation": "Washington University in St. Louis"
+    },
+    {
+      "name": "Jacobs, Nathan",
+      "orcid": "0000-0002-4242-8967",
+      "affiliation": "Washington University in St. Louis"
+    },
+    {
+      "name": "Siqueira Reis, Rodrigo",
+      "orcid": "0000-0002-9872-9865",
+      "affiliation": "Washington University in St. Louis"
+    }
   ],
   "keywords": [
     "spatial inequity",
