@@ -1,0 +1,29 @@
+{
+  "upload_type": "software",
+  "title": "Spatial inequities and livability in St. Louis — interactive companion",
+  "description": "<p>Interactive companion to Favar&atilde;o Le&atilde;o et al., <em>Exploring spatial inequities and livability: a mixed-methods study using artificial intelligence and community insights</em> (Journal of Urban Health, 2026).</p><p>A vision&ndash;language model rated micro-scale built-environment features on 7,848 Google Street View street segments across the City of St. Louis. This repository contains the dashboard that presents those results alongside census-tract demographics, the build pipeline that regenerates every figure from the analysis sources, and the tract- and segment-level data.</p><p>Regression coefficients are recomputed from source rather than transcribed, so the slopes shown reproduce Figures 1 and 2 of the paper exactly.</p>",
+  "access_right": "open",
+  "license": "MIT",
+  "creators": [
+    { "name": "Favarão Leão, Ana Luiza", "orcid": "0000-0002-0914-0937" },
+    { "name": "Wang, Yi", "orcid": "0000-0002-1486-5051" },
+    { "name": "Banda, Bernard F." },
+    { "name": "Balogun, Mariam" },
+    { "name": "Xing, Eric", "orcid": "0000-0002-3683-4280" },
+    { "name": "Gudapati, Sanketh" },
+    { "name": "Rios-Hernandez, Maryse" },
+    { "name": "Jacobs, Nathan", "orcid": "0000-0002-4242-8967" },
+    { "name": "Siqueira Reis, Rodrigo", "orcid": "0000-0002-9872-9865" }
+  ],
+  "keywords": [
+    "spatial inequity",
+    "urban livability",
+    "vision-language models",
+    "street view imagery",
+    "built environment",
+    "mixed methods",
+    "St. Louis",
+    "urban health"
+  ],
+  "notes": "Street View panoramas included as examples are © Google and are reproduced with attribution; they are not covered by the repository's licence."
+}
