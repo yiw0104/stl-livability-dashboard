@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Spatial Inequities &amp; Livability in St. Louis</title>
+<title>Measuring urban livability in St. Louis using AI and community insights</title>
 <meta name="description" content="Interactive companion to a mixed-methods study of spatial inequities and urban livability in St. Louis: 7,848 AI-audited street segments across 104 census tracts, paired with resident and stakeholder interviews.">
 <style>
 /* ------------------------------------------------------------- typefaces */
@@ -119,6 +119,16 @@ a { color: var(--accent); }
 .muted { color: var(--text-muted); }
 .sec { color: var(--text-secondary); }
 
+/* Present in the accessibility tree and the document outline, but not painted.
+   The page leads with the standfirst instead; removing the h1 outright would
+   leave the document with no top-level heading. */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%);
+  white-space: nowrap; border: 0;
+}
+
 /* --------------------------------------------------------------- header */
 header {
   border-bottom: 1px solid var(--border);
@@ -136,7 +146,7 @@ header {
      (measured: 1102.8px of a 1132px content box), so the two align on the
      right. Below ~1228px viewport the container is narrower than this and
      the cap stops applying, which is what we want. */
-  margin-top: 12px; max-width: 1103px; color: var(--text-secondary);
+  max-width: 1103px; color: var(--text-secondary);
   font-family: var(--font-text); font-size: 15.5px; line-height: 1.6;
 }
 .head-meta {
@@ -353,8 +363,7 @@ footer {
 
 <header>
   <div class="head-inner">
-    <div class="eyebrow"></div>
-    <h1></h1>
+    <h1 class="visually-hidden">Measuring urban livability in St. Louis using AI and community insights</h1>
     <p class="head-sub">
       In this study, we (1) measured urban livability using AI-assisted streetscape audits (N=7,848 street segments); 
       (2) explored the distribution of livability features to identify and understand spatial inequities; and 
