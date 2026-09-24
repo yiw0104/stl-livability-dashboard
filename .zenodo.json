@@ -57,5 +57,13 @@
     "St. Louis",
     "urban health"
   ],
-  "notes": "Street View panoramas included as examples are © Google and are reproduced with attribution; they are not covered by the repository's licence."
+  "notes": "Street View panoramas included as examples are © Google and are reproduced with attribution; they are not covered by the repository's licence.",
+  "related_identifiers": [
+    {
+      "identifier": "10.1007/s11524-026-01170-3",
+      "relation": "isSupplementTo",
+      "scheme": "doi",
+      "resource_type": "publication-article"
+    }
+  ]
 }

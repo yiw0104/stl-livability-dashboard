@@ -5,6 +5,7 @@ An interactive dashboard accompanying:
 > Favarão Leão AL, Wang Y, Banda BF, Balogun M, Xing E, Gudapati S, Rios-Hernandez M,
 > Jacobs N, Reis RS. **Exploring spatial inequities and livability: a mixed-methods study
 > using artificial intelligence and community insights.** *Journal of Urban Health*, 2026.
+> [10.1007/s11524-026-01170-3](https://doi.org/10.1007/s11524-026-01170-3)
 
 **Live dashboard → https://yiw0104.github.io/stl-livability-dashboard/**
 

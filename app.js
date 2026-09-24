@@ -485,7 +485,8 @@
     sec.appendChild(el("footer", { html:
       "Favar&atilde;o Le&atilde;o AL, Wang Y, Banda BF, Balogun M, Xing E, Gudapati S, Rios-Hernandez M, "
       + "Jacobs N, Reis RS. (2026). Exploring spatial inequities and livability: a mixed-methods study using "
-      + "artificial intelligence and community insights. <i>Journal of Urban Health.</i> [doi to be added]<br>" }));
+      + "artificial intelligence and community insights. <i>Journal of Urban Health.</i> "
+      + "<a href=\"https://doi.org/10.1007/s11524-026-01170-3\">https://doi.org/10.1007/s11524-026-01170-3</a><br>" }));
     root.appendChild(sec);
   }
 
